@@ -18,7 +18,7 @@ def get_live_weather(location, api_key=None):
         try:
             api_key = st.secrets["openweathermap"]["api_key"]
         except Exception:
-            st.error("⚠️ Configuration Error: Weather API key missing from cloud secrets infrastructure.")
+            st.error("Configuration Error: Weather API key missing from cloud secrets infrastructure.")
             return None
             
     try:
@@ -61,15 +61,15 @@ def calculate_comprehensive_safety(weather, horse):
     # ------------------------------------------
     if horse["anhidrosis"]:
         return {"status": "CRITICAL RISK: DO NOT RIDE", "score": 999, "color": "red", 
-                "factors": ["⚠️ ANHIDROSIS: Biological inability to sweat. Life-threatening heatstroke risk if worked in heat."]}
+                "factors": ["ANHIDROSIS: Biological inability to sweat. Life-threatening heatstroke risk if worked in heat."]}
     
     if horse["hydration"] == "Dehydrated (Tacky gums / Slow skin tent)":
         return {"status": "CRITICAL RISK: DO NOT RIDE", "score": 999, "color": "red", 
-                "factors": ["⚠️ DEHYDRATION: Pre-existing fluid deficit eliminates the horse's ability to cool itself safely."]}
+                "factors": ["DEHYDRATION: Pre-existing fluid deficit eliminates the horse's ability to cool itself safely."]}
                 
     if horse["pre_temp_check"] and horse["pre_temp"] >= 102.0:
         return {"status": "CRITICAL RISK: DO NOT RIDE", "score": 999, "color": "red", 
-                "factors": [f"⚠️ ELEVATED INITIAL VITALS: Baseline temperature is currently {horse['pre_temp']}°F. The horse is already in a state of hyperthermia or fighting infection."]}
+                "factors": [f"ELEVATED INITIAL VITALS: Baseline temperature is currently {horse['pre_temp']}°F. The horse is already in a state of hyperthermia or fighting infection."]}
 
     # ------------------------------------------
     # PHYSIOLOGICAL & CLINICAL MODIFIERS
@@ -150,13 +150,13 @@ def calculate_comprehensive_safety(weather, horse):
     total_score = base_index + penalty_score
 
     if total_score < 130:
-        return {"status": "🌿 SAFE TO RIDE: OPTIMAL BASELINE", "score": total_score, "color": "green", "factors": risk_factors}
+        return {"status": "SAFE TO RIDE: OPTIMAL BASELINE", "score": total_score, "color": "green", "factors": risk_factors}
     elif 130 <= total_score <= 150:
-        return {"status": "🔶 USE CAUTION: ELEVATED THERMAL STRAIN", "score": total_score, "color": "yellow", "factors": risk_factors}
+        return {"status": "USE CAUTION: ELEVATED THERMAL STRAIN", "score": total_score, "color": "yellow", "factors": risk_factors}
     elif 151 <= total_score <= 175:
-        return {"status": "🟧 REDUCED WORK ONLY: SEVERE CARDIOVASCULAR BURDEN", "score": total_score, "color": "orange", "factors": risk_factors}
+        return {"status": "REDUCED WORK ONLY: SEVERE CARDIOVASCULAR BURDEN", "score": total_score, "color": "orange", "factors": risk_factors}
     else:
-        return {"status": "🛑 DO NOT RIDE: CRITICAL THERMAL CRISIS", "score": total_score, "color": "red", "factors": risk_factors}
+        return {"status": "DO NOT RIDE: CRITICAL THERMAL CRISIS", "score": total_score, "color": "red", "factors": risk_factors}
 
 
 # ==========================================
@@ -196,11 +196,11 @@ st.markdown(f"""
 """, unsafe_allow_html=True)
 
 # Main Brand Header UI Layout
-st.markdown("### 📊 EQUINE BIO-THERMAL ANALYTICS PLATFORM")
+st.markdown("### EQUINE BIO-THERMAL ANALYTICS PLATFORM")
 st.caption("Real-Time Atmospheric Evaluation & Equine Risk Analysis Profile")
 
 # Permanent Clinical Disclaimer Box
-with st.expander("⚖️ LEGAL COMPLIANCE & LIABILITY CLEARANCE STATEMENTS", expanded=False):
+with st.expander("LEGAL COMPLIANCE & LIABILITY CLEARANCE STATEMENTS", expanded=False):
     st.markdown(
         f"<div style='font-size: 0.85rem; color: {brand_text}; opacity: 0.85; line-height: 1.5;'>"
         "This system serves purely as an analytical calculation utility based on generalized thermodynamic indices. "
@@ -217,7 +217,7 @@ st.markdown("---")
 col_env, col_phys = st.columns([1, 1.2])
 
 with col_env:
-    st.markdown("<div class='stSubheader'>🌐 Atmospheric Parameters</div>", unsafe_allow_html=True)
+    st.markdown("<div class='stSubheader'> Atmospheric Parameters</div>", unsafe_allow_html=True)
     
     manual_mode = st.checkbox("Toggle Manual Override (Skip Weather API Sync)")
     
@@ -235,7 +235,7 @@ with col_env:
         weather = {"temp_f": m_temp, "humidity": m_hum, "uv_index": m_uv, "wind_speed": m_wind, "error": None}
 
 with col_phys:
-    st.markdown("<div class='stSubheader'>🧬 Comprehensive Equine Diagnostics</div>", unsafe_allow_html=True)
+    st.markdown("<div class='stSubheader'> Comprehensive Equine Diagnostics</div>", unsafe_allow_html=True)
     
     c1, c2 = st.columns(2)
     with c1:
@@ -279,14 +279,14 @@ horse_data = {
 
 if location:
     if weather is None:
-        st.error("❌ System Error: The entered location could not be verified by global servers. Please check geographic formatting.")
+        st.error("System Error: The entered location could not be verified by global servers. Please check geographic formatting.")
     elif weather.get("error") == "activation_delay":
-        st.warning("⏳ API Activation Pending: OpenWeatherMap is validating your new key profile. In the meantime, check the box under Section 1 to use Manual Weather Entry mode to explore the full logic!")
+        st.warning("API Activation Pending: OpenWeatherMap is validating your new key profile. In the meantime, check the box under Section 1 to use Manual Weather Entry mode to explore the full logic!")
     else:
         results = calculate_comprehensive_safety(weather, horse_data)
         
         st.markdown("---")
-        st.markdown("<div class='stSubheader'>📊 Composite System Assessment Verdict</div>", unsafe_allow_html=True)
+        st.markdown("<div class='stSubheader'> Composite System Assessment Verdict</div>", unsafe_allow_html=True)
         
         card_class = f"card-{results['color']}"
         st.markdown(f"""
@@ -307,12 +307,12 @@ if location:
         
         if results["factors"]:
             st.write("")
-            with st.expander("🔍 VIEW APPLIED BIO-THERMAL RISK MATRIX BREAKDOWN", expanded=True):
+            with st.expander("VIEW APPLIED BIO-THERMAL RISK MATRIX BREAKDOWN", expanded=True):
                 for factor in results["factors"]:
                     st.markdown(f"<div style='font-size:0.9rem; color:{brand_text}; opacity: 0.85; padding:2px 0;'>{factor}</div>", unsafe_allow_html=True)
                     
         st.write("")
-        st.markdown("### 🩺 Mandatory Veterinary Operational Protocol")
+        st.markdown("### Recommended Protocol")
         
         if results["color"] == "green":
             st.markdown(
@@ -346,4 +346,4 @@ if location:
                 "</div>", unsafe_allow_html=True
             )
 else:
-    st.info("💡 Complete Section 1 by entering a geographic query to launch the automated bio-thermal risk evaluation sequence.")
+    st.info("Complete Section 1 by entering a geographic query to launch the automated bio-thermal risk evaluation sequence.")
