@@ -195,7 +195,7 @@ st.markdown(f"""
 """, unsafe_allow_html=True)
 
 # Main Brand Header UI Layout
-st.markdown("### EQUINE BIO-THERMAL ANALYTICS PLATFORM")
+st.markdown("### EQUINE HEAT SAFETY ANALYTICS PLATFORM")
 st.caption("Real-Time Atmospheric Evaluation & Equine Risk Analysis Profile")
 
 # Permanent Clinical Disclaimer Box
@@ -207,6 +207,7 @@ with st.expander("LEGAL COMPLIANCE & LIABILITY CLEARANCE STATEMENTS", expanded=F
         "Individual equine physiological responses vary aggressively based on genetics, hydration, and unmapped systemic conditions. "
         "Users must cross-reference analytical calculations against real-time common-sense observation. "
         "The developer and hosting entities accept zero liability for animal illness or physical performance injuries."
+        "ALWAYS FOLLOW YOUR VETS ADVICE FOR YOUR OWN HORSE"
         "</div>", unsafe_allow_html=True
     )
 
