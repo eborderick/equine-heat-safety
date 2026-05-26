@@ -162,7 +162,7 @@ def calculate_comprehensive_safety(weather, horse):
 # 2. BRANDED GRAPHICS & CSS CUSTOM CODES
 # ==========================================
 
-st.set_page_config(page_title="Equine Bio-Thermal Analytics Platform", page_icon="🐴", layout="wide")
+st.set_page_config(page_title="Equine Heat Safety Analytics Platform", page_icon="🐴", layout="wide")
 
 # OFFICIALLY MAPPED PERSONAL BRAND COLOURED VARIABLES
 brand_primary = "#A6512D"    # Burnt Copper
