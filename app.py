@@ -206,7 +206,7 @@ with st.expander("LEGAL COMPLIANCE & LIABILITY CLEARANCE STATEMENTS", expanded=F
         "It does not constitute diagnostic clinical feedback, vet medical treatment paths, or formal safety criteria. "
         "Individual equine physiological responses vary aggressively based on genetics, hydration, and unmapped systemic conditions. "
         "Users must cross-reference analytical calculations against real-time common-sense observation. "
-        "The developer and hosting entities accept zero liability for animal illness or physical performance injuries."
+        "The developer and hosting entities accept zero liability for animal illness or physical performance injuries. "
         "ALWAYS FOLLOW YOUR VETS ADVICE FOR YOUR OWN HORSE"
         "</div>", unsafe_allow_html=True
     )
