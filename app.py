@@ -216,6 +216,7 @@ st.markdown(f"""
 """, unsafe_allow_html=True)
 
 st.markdown("### EQUINE BIO-THERMAL ANALYTICS PLATFORM")
+st.caption("Real-Time Atmospheric Evaluation & Equine Risk Analysis Profile")
 
 with st.expander("⚖️ LEGAL COMPLIANCE & LIABILITY CLEARANCE STATEMENTS", expanded=False):
     st.markdown(
