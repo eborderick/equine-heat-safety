@@ -2,6 +2,8 @@
 
 A high-fidelity, professional software solution designed to cross-evaluate real-time atmospheric data against complex equine physiological markers to calculate exact thermoregulatory risk thresholds.
 
+This can be directly accessed by the following link: https://equine-heat-safety.streamlit.app/
+
 ## Core Features
 - **Live Meteorological Sync:** Direct tracking of ambient temperature, relative humidity, wind velocity, and cloud cover indexes via OpenWeatherMap.
 - **Advanced Physiological Matrix:** Algorithms mapping variables including age, breed morphology, Henneke Body Condition Score (BCS), hydration status, and endocrine pathologies (Cushing's/PPID, Anhidrosis, Equine Asthma).
