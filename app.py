@@ -215,8 +215,7 @@ st.markdown(f"""
 </style>
 """, unsafe_allow_html=True)
 
-st.markdown("### 📊 EQUINE BIO-THERMAL ANALYTICS PLATFORM")
-st.caption("Custom Enterprise Architecture Framework | Feature-Complete Veterinary Layout")
+st.markdown("### EQUINE BIO-THERMAL ANALYTICS PLATFORM")
 
 with st.expander("⚖️ LEGAL COMPLIANCE & LIABILITY CLEARANCE STATEMENTS", expanded=False):
     st.markdown(
