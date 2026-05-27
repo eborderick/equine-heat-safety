@@ -193,7 +193,7 @@ def calculate_comprehensive_safety(weather, horse):
 # 2. BRANDED GRAPHICS & UK L10N CSS CODES
 # ==========================================
 
-st.set_page_config(page_title="Equine Bio-Thermal Analytics Platform", page_icon="🐴", layout="wide")
+st.set_page_config(page_title="Equine Heat Safety Analytics Platform", page_icon="🐴", layout="wide")
 
 brand_primary = "#A6512D"  # Burnt Copper
 brand_bg = "#EAD9C8"  # Soft Oat Cream
@@ -224,7 +224,7 @@ st.markdown(f"""
 </style>
 """, unsafe_allow_html=True)
 
-st.markdown("### 📊 EQUINE BIO-THERMAL ANALYTICS PLATFORM")
+st.markdown("### 📊 EQUINE HEAT SAFETY ANALYTICS PLATFORM")
 st.caption("UK Metric Localization Profile | Real-Time Atmospheric Evaluation & Equine Risk Analysis")
 
 with st.expander("⚖️ LEGAL COMPLIANCE & LIABILITY CLEARANCE STATEMENTS", expanded=False):
