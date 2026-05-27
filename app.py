@@ -10,7 +10,7 @@ def get_live_weather(location, api_key=None):
     """
     Fetches real-time data using secure configuration keys.
     Pulls securely from Streamlit Cloud Secrets if no key is explicitly passed.
-    Returns metrics normalized to Celsius.
+    Returns metrics normalised to Celsius.
     """
     if not location:
         return None
@@ -139,10 +139,10 @@ def calculate_comprehensive_safety(weather, horse):
         risk_factors.append(
             "• Stabled Heat Retention: Standing indoors has pre-warmed the core body temperature before tacking up.")
 
-    if horse["acclimatized"] == "No (Recent climate change or sudden heatwave)":
+    if horse["acclimatised"] == "No (Recent climate change or sudden heatwave)":
         penalty_score += 12
         risk_factors.append(
-            "• Lack of Acclimatization: Plasma volume and sweat-electrolyte balance have not adjusted to local thermal trends.")
+            "• Lack of Acclimatisation: Plasma volume and sweat-electrolyte balance have not adjusted to local thermal trends.")
     if horse["fitness"] == "Unfit / Returning from injury":
         penalty_score += 8
         risk_factors.append(
@@ -225,12 +225,12 @@ st.markdown(f"""
 """, unsafe_allow_html=True)
 
 st.markdown("### 📊 EQUINE HEAT SAFETY ANALYTICS PLATFORM")
-st.caption("UK Metric Localization Profile | Real-Time Atmospheric Evaluation & Equine Risk Analysis")
+st.caption("UK Metric Localisation Profile | Real-Time Atmospheric Evaluation & Equine Risk Analysis")
 
 with st.expander("⚖️ LEGAL COMPLIANCE & LIABILITY CLEARANCE STATEMENTS", expanded=False):
     st.markdown(
         f"<div style='font-size: 0.85rem; color: {brand_text}; opacity: 0.85; line-height: 1.5;'>"
-        "This system serves purely as an analytical calculation utility based on generalized thermodynamic indices. "
+        "This system serves purely as an analytical calculation utility based on generalised thermodynamic indices. "
         "It does not constitute diagnostic clinical feedback, vet medical treatment paths, or formal safety criteria. "
         "Individual equine physiological responses vary aggressively based on genetics, hydration, and unmapped systemic conditions. "
         "Users must cross-reference analytical calculations against real-time common-sense observation. "
@@ -291,7 +291,7 @@ with col_phys:
                                                                        "Heavy (Cantering, jumping, intense schooling)"])
         fitness = st.selectbox("Cardiovascular Conditioning Profile",
                                ["Fit / Fully Conditioned", "Unfit / Returning from injury"])
-        acclimatized = st.selectbox("Acclimatization Status", ["Yes (Fully adapted over 2+ weeks to current climate)",
+        acclimatised = st.selectbox("Acclimatisation Status", ["Yes (Fully adapted over 2+ weeks to current climate)",
                                                                "No (Recent climate change or sudden heatwave)"])
         hydration = st.selectbox("Clinical Hydration Baseline", ["Normal (Pink, wet gums; rapid skin elastic snap)",
                                                                  "Dehydrated (Tacky gums / Slow skin tent)"])
@@ -314,7 +314,7 @@ with col_phys:
 # Package unified system variables
 horse_data = {
     "age": age, "type": horse_type, "color": color, "coat": coat_status, "bcs": bcs, "turnout": turnout,
-    "workload": workload, "fitness": fitness, "acclimatized": acclimatized, "hydration": hydration,
+    "workload": workload, "fitness": fitness, "acclimatised": acclimatised, "hydration": hydration,
     "sweat_type": sweat_type, "anhidrosis": anhidrosis, "cushings": cushings, "asthma": asthma,
     "pre_temp_check": pre_temp_check, "pre_temp_c": pre_temp_c, "shade": shade
 }
@@ -392,7 +392,7 @@ if location:
                 f"<div class='protocol-box' style='color:#991b1b; background-color:#fef2f2; padding:15px; border: 1px solid #dc2626;'>"
                 "<strong>• SYSTEMIC EXERCISE INTERDICTION:</strong> Training operations must be abandoned completely. Environmental constraints paired against horse physiological vulnerabilities indicate absolute metabolic saturation limits.<br>"
                 "<strong>• DIRECT PATHOLOGY THREATS:</strong> Proceeding with physical exercise creates high correlations with sudden heatstroke, complete anhidrotic collapse, or systemic rhabdomyolysis (tying-up).<br>"
-                "<strong>• RECOVERY ACTIONS:</strong> Stable the animal in deep, unexposed shelter utilizing industrial airflow arrays or active cooling configurations. Maintain hydration support profiles and monitor core parameters closely."
+                "<strong>• RECOVERY ACTIONS:</strong> Stable the animal in deep, unexposed shelter utilising industrial airflow arrays or active cooling configurations. Maintain hydration support profiles and monitor core parameters closely."
                 "</div>", unsafe_allow_html=True
             )
 else:
@@ -414,7 +414,7 @@ with st.expander("🔍 VETERINARY RESEARCH & REFERENCE INDEX", expanded=False):
                 <em>(Kang et al., 2023; International Journal of Biometeorology)</em>.
             </li>
             <li>
-                <strong>Climate Impact Indices:</strong> The Federation Equestre Internationale (FEI) explicitly utilizes comprehensive environmental tracking indexes (including temperature, humidity, wind velocity, and solar loading coefficients) to safely evaluate performance restrictions and mitigate heat illnesses at global championship levels 
+                <strong>Climate Impact Indices:</strong> The Federation Equestre Internationale (FEI) explicitly utilises comprehensive environmental tracking indexes (including temperature, humidity, wind velocity, and solar loading coefficients) to safely evaluate performance restrictions and mitigate heat illnesses at global championship levels 
                 <em>(Marlin, D., FEI Climate Guidelines)</em>.
             </li>
             <li>
