@@ -429,5 +429,12 @@ with st.expander("🔍 VETERINARY RESEARCH & REFERENCE INDEX", expanded=False):
     </div>
     """, unsafe_allow_html=True)
     
-# PRODUCTION COPYRIGHT FOOTER
-st.markdown("<div style='text-align: center; margin-top: 40px; font-size: 0.8rem; opacity: 0.7;'>© 2026 Eloise Borderick / Equine Heat Safety Analytics Platform. All Rights Reserved.</div>", unsafe_allow_html=True)
+# PRODUCTION COPYRIGHT FOOTER WITH LINKTREE
+st.markdown("""
+<div style='text-align: center; margin-top: 40px; font-size: 0.8rem; opacity: 0.8;'>
+    © 2026 Eloise Borderick / Equine Heat Safety Analytics Platform. All Rights Reserved.<br>
+    <a href='https://linktr.ee/ehborders' target='_blank' style='color: #A6512D; font-weight: bold; text-decoration: none;'>
+        📱 Connect on Social Media & Follow Sox 🐴
+    </a>
+</div>
+""", unsafe_allow_html=True)
