@@ -225,7 +225,7 @@ st.markdown(f"""
 """, unsafe_allow_html=True)
 
 st.markdown("### 📊 EQUINE HEAT SAFETY ANALYTICS PLATFORM")
-st.caption("UK Metric Localisation Profile | Real-Time Atmospheric Evaluation & Equine Risk Analysis")
+st.caption("Powered by live, real-time local weather tracking data. Unlike standard forecast apps, this calculates your horse's current thermal load based on actual atmospheric conditions right now.")
 
 with st.expander("⚖️ LEGAL COMPLIANCE & LIABILITY CLEARANCE STATEMENTS", expanded=False):
     st.markdown(
@@ -244,7 +244,7 @@ st.markdown("---")
 col_env, col_phys = st.columns([1, 1.2])
 
 with col_env:
-    st.markdown("<div class='stSubheader'>🌐 Atmospheric Parameters (UK Metric)</div>", unsafe_allow_html=True)
+    st.markdown("<div class='stSubheader'>Weather Parameters (Metric)</div>", unsafe_allow_html=True)
 
     manual_mode = st.checkbox("Toggle Manual Override (Skip Weather API Sync)")
 
@@ -269,7 +269,7 @@ with col_env:
                    "wind_speed_mph": m_wind_mph, "wind_speed_kph": m_wind_kph, "error": None}
 
 with col_phys:
-    st.markdown("<div class='stSubheader'>🧬 Comprehensive Equine Diagnostics</div>", unsafe_allow_html=True)
+    st.markdown("<div class='stSubheader'>Horse Profile</div>", unsafe_allow_html=True)
 
     c1, c2 = st.columns(2)
     with c1:
@@ -304,7 +304,7 @@ with col_phys:
         asthma = st.checkbox("Equine Asthma / RAO / Heaves")
 
     st.markdown("---")
-    st.markdown("**Optional Objective Vitals:**")
+    st.markdown("**Optional Temperature Vital:**")
     pre_temp_check = st.checkbox("I have a manual pre-ride rectal temperature reading")
     pre_temp_c = 38.0
     if pre_temp_check:
@@ -334,7 +334,7 @@ if location:
         results = calculate_comprehensive_safety(weather, horse_data)
 
         st.markdown("---")
-        st.markdown("<div class='stSubheader'>📊 Composite System Assessment Verdict</div>", unsafe_allow_html=True)
+        st.markdown("<div class='stSubheader'>📊 System Assessment Verdict</div>", unsafe_allow_html=True)
 
         card_class = f"card-{results['color']}"
         st.markdown(f"""
@@ -362,7 +362,7 @@ if location:
                         unsafe_allow_html=True)
 
         st.write("")
-        st.markdown("### 🩺 Mandatory Veterinary Operational Protocol")
+        st.markdown("### Recommended Protocol")
 
         if results["color"] == "green":
             st.markdown(
@@ -404,7 +404,7 @@ else:
 # ==========================================
 st.write("")
 st.markdown("---")
-with st.expander("🔍 VETERINARY RESEARCH & REFERENCE INDEX", expanded=False):
+with st.expander("RESEARCH & REFERENCES", expanded=False):
     st.markdown(f"""
     <div style='font-size: 0.9rem; line-height: 1.6; color: {brand_text};'>
         <strong>Academic & Regulatory References:</strong><br>
