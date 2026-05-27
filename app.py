@@ -428,3 +428,6 @@ with st.expander("🔍 VETERINARY RESEARCH & REFERENCE INDEX", expanded=False):
         • <a href="https://www.beva.org.uk/" target="_blank" style="color: {brand_primary}; font-weight: 600;">British Equine Veterinary Association (BEVA) Resources</a>
     </div>
     """, unsafe_allow_html=True)
+    
+# PRODUCTION COPYRIGHT FOOTER
+st.markdown("<div style='text-align: center; margin-top: 40px; font-size: 0.8rem; opacity: 0.7;'>© 2026 Equine Heat Safety Analytics Platform. All Rights Reserved.</div>", unsafe_allow_html=True)
