@@ -224,10 +224,10 @@ st.markdown(f"""
 </style>
 """, unsafe_allow_html=True)
 
-st.markdown("### 📊 EQUINE HEAT SAFETY ANALYTICS PLATFORM")
+st.markdown("### EQUINE HEAT SAFETY ANALYTICS PLATFORM")
 st.caption("Powered by live, real-time local weather tracking data. Unlike standard forecast apps, this calculates your horse's current thermal load based on actual atmospheric conditions right now.")
 
-with st.expander("⚖️ LEGAL COMPLIANCE & LIABILITY CLEARANCE STATEMENTS", expanded=False):
+with st.expander("LEGAL COMPLIANCE & LIABILITY CLEARANCE STATEMENTS", expanded=False):
     st.markdown(
         f"<div style='font-size: 0.85rem; color: {brand_text}; opacity: 0.85; line-height: 1.5;'>"
         "This system serves purely as an analytical calculation utility based on generalised thermodynamic indices. "
@@ -235,7 +235,7 @@ with st.expander("⚖️ LEGAL COMPLIANCE & LIABILITY CLEARANCE STATEMENTS", exp
         "Individual equine physiological responses vary aggressively based on genetics, hydration, and unmapped systemic conditions. "
         "Users must cross-reference analytical calculations against real-time common-sense observation. "
         "The developer and hosting entities accept zero liability for animal illness or physical performance injuries. "
-        "ALWAYS FOLLOW YOUR VETS ADVICE."
+        "ALWAYS THE ADVICE OF YOUR OWN VETS."
         "</div>", unsafe_allow_html=True
     )
 
@@ -246,7 +246,7 @@ col_env, col_phys = st.columns([1, 1.2])
 with col_env:
     st.markdown("<div class='stSubheader'>Weather Parameters (Metric)</div>", unsafe_allow_html=True)
 
-    manual_mode = st.checkbox("Toggle Manual Override (Skip Weather API Sync)")
+    manual_mode = st.checkbox("Manual Override (Skip Weather API Sync)")
 
     if not manual_mode:
         location = st.text_input("Target Location Profile", placeholder="e.g., London, UK")
@@ -273,11 +273,11 @@ with col_phys:
 
     c1, c2 = st.columns(2)
     with c1:
-        age = st.slider("Chronological Age (Years)", min_value=1, max_value=30, value=10)
+        age = st.slider("Age (Years)", min_value=1, max_value=30, value=10)
         horse_type = st.selectbox("Morphology / Breed Type",
                                   ["Light Riding Horse (Thoroughbred/Warmblood)", "Pony / Native Breed",
                                    "Cob / Heavy Native Pony", "Heavy Draft (Clydesdale/Shire/etc.)"])
-        color = st.selectbox("Phenotypic Coat Pigmentation",
+        color = st.selectbox("Coat Pigmentation",
                              ["Light (White/Grey/Palomino/Light Chestnut)", "Dark (Black / Dark Bay / Dark Brown)"])
         coat_status = st.selectbox("Current Coat Profile",
                                    ["Shed Out / Summer Coat", "Heavy Winter / Clipped & Growing back"])
@@ -304,7 +304,7 @@ with col_phys:
         asthma = st.checkbox("Equine Asthma / RAO / Heaves")
 
     st.markdown("---")
-    st.markdown("**Optional Temperature Vital:**")
+    st.markdown("**Optional Temperature Reading:**")
     pre_temp_check = st.checkbox("I have a manual pre-ride rectal temperature reading")
     pre_temp_c = 38.0
     if pre_temp_check:
@@ -326,15 +326,15 @@ horse_data = {
 if location:
     if weather is None:
         st.error(
-            "❌ System Error: The entered location could not be verified by global servers. Please check geographic formatting.")
+            "System Error: The entered location could not be verified by global servers. Please check geographic formatting.")
     elif weather.get("error") == "activation_delay":
         st.warning(
-            "⏳ API Activation Pending: OpenWeatherMap is validating your new key profile. In the meantime, check the box under Section 1 to use Manual Weather Entry mode to explore the full logic!")
+            "API Activation Pending: OpenWeatherMap is validating your new key profile. In the meantime, check the box under Section 1 to use Manual Weather Entry mode to explore the full logic!")
     else:
         results = calculate_comprehensive_safety(weather, horse_data)
 
         st.markdown("---")
-        st.markdown("<div class='stSubheader'>📊 System Assessment Verdict</div>", unsafe_allow_html=True)
+        st.markdown("<div class='stSubheader'>System Assessment Verdict</div>", unsafe_allow_html=True)
 
         card_class = f"card-{results['color']}"
         st.markdown(f"""
@@ -355,7 +355,7 @@ if location:
 
         if results["factors"]:
             st.write("")
-            with st.expander("🔍 VIEW APPLIED BIO-THERMAL RISK MATRIX BREAKDOWN", expanded=True):
+            with st.expander("VIEW APPLIED HEAT RISK MATRIX BREAKDOWN", expanded=True):
                 for factor in results["factors"]:
                     st.markdown(
                         f"<div style='font-size:0.9rem; color:{brand_text}; opacity: 0.85; padding:2px 0;'>{factor}</div>",
@@ -397,7 +397,7 @@ if location:
             )
 else:
     st.info(
-        "💡 Complete Section 1 by entering a geographic query to launch the automated bio-thermal risk evaluation sequence.")
+        "Complete Section 1 by entering a geographic query to launch the automated bio-thermal risk evaluation sequence.")
 
 # ==========================================
 # 4. VETERINARY RESEARCH & LITERATURE PANEL
