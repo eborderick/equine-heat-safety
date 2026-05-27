@@ -430,4 +430,4 @@ with st.expander("🔍 VETERINARY RESEARCH & REFERENCE INDEX", expanded=False):
     """, unsafe_allow_html=True)
     
 # PRODUCTION COPYRIGHT FOOTER
-st.markdown("<div style='text-align: center; margin-top: 40px; font-size: 0.8rem; opacity: 0.7;'>© 2026 Equine Heat Safety Analytics Platform. All Rights Reserved.</div>", unsafe_allow_html=True)
+st.markdown("<div style='text-align: center; margin-top: 40px; font-size: 0.8rem; opacity: 0.7;'>© 2026 Eloise Borderick / Equine Heat Safety Analytics Platform. All Rights Reserved.</div>", unsafe_allow_html=True)
