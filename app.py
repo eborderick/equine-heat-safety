@@ -23,7 +23,7 @@ def get_live_weather(location, api_key=None):
             return None
 
     try:
-        # Requesting imperial first to preserve baseline algorithm numbers cleanly
+        # Requesting imperial data to preserve baseline formula parameters cleanly
         url = f"http://api.openweathermap.org/data/2.5/weather?q={location}&APPID={api_key}&units=imperial"
         response = requests.get(url)
         data = response.json()
@@ -37,13 +37,13 @@ def get_live_weather(location, api_key=None):
         clouds = data.get("clouds", {}).get("all", 0)
         estimated_uv = max(1.0, 10.0 - (clouds / 10.0))
 
-        # Pull Fahrenheit data and convert dynamically for clean processing
+        # Capture raw Fahrenheit data for logic processing, and convert to Celsius for display
         temp_f = float(data["main"]["temp"])
         temp_c = (temp_f - 32) * 5 / 9
 
         return {
             "temp_c": round(temp_c, 1),
-            "temp_f": temp_f,  # Retained internally for base index equation mapping
+            "temp_f": temp_f,
             "humidity": int(data["main"]["humidity"]),
             "uv_index": float(estimated_uv),
             "wind_speed_mph": float(data["wind"]["speed"]),
@@ -60,7 +60,7 @@ def calculate_comprehensive_safety(weather, horse):
     Calculates exact thermodynamic burden using physiological modifiers.
     All incoming parameters are processed relative to standard equine thermal thresholds.
     """
-    # Baseline equation maps strictly over Fahrenheit conversions
+    # Dynamic calculation equation relies on calibrated baseline conversions
     base_index = weather["temp_f"] + weather["humidity"]
     penalty_score = 0
     risk_factors = []
@@ -78,7 +78,7 @@ def calculate_comprehensive_safety(weather, horse):
                 "factors": [
                     "⚠️ DEHYDRATION: Pre-existing fluid deficit eliminates the horse's ability to cool itself safely."]}
 
-    if horse["pre_temp_check"] and horse["pre_temp_c"] >= 38.9:  # 38.9°C = 102.0°F
+    if horse["pre_temp_check"] and horse["pre_temp_c"] >= 38.9:
         return {"status": "CRITICAL RISK: DO NOT RIDE", "score": 999, "color": "red",
                 "factors": [
                     f"⚠️ ELEVATED INITIAL VITALS: Baseline temperature is currently {horse['pre_temp_c']}°C. The horse is already hyperthermic or fighting infection."]}
@@ -129,7 +129,7 @@ def calculate_comprehensive_safety(weather, horse):
         risk_factors.append(
             "• Lathering Sweat: Heavy white foam indicates rapid, high-concentration electrolyte depletion.")
 
-    if horse["pre_temp_check"] and 38.3 <= horse["pre_temp_c"] < 38.9:  # 38.3°C = 101.0°F
+    if horse["pre_temp_check"] and 38.3 <= horse["pre_temp_c"] < 38.9:
         penalty_score += 10
         risk_factors.append(
             f"• Borderline Elevated Baseline Vitals ({horse['pre_temp_c']}°C): Commencing work with reduced safety margin.")
@@ -256,12 +256,12 @@ with col_env:
         location = "Manual Override Mode"
         m_temp_c = st.slider("Observed Temperature (°C)", 15.0, 45.0, 28.0, step=0.5)
         m_hum = st.slider("Observed Relative Humidity (%)", 10, 100, 60)
-        m_wind_kph = st.slider("Observed Wind Speed (kp/h)", 0.0, 40.0, 10.0, step=0.5)
+        m_wind_kph = st.slider("Observed Wind Speed (km/h)", 0.0, 40.0, 10.0, step=0.5)
         m_uv = st.slider("Estimated Solar Exposure / UV (1-10 Scale)", 1, 10, 5)
         shade = st.radio("Solar Radiation Cover",
                          ["Completely Shaded / Indoor Arena", "Partial Shade / Canopy", "Full Sun / No Arena Cover"])
 
-        # Internal map values supporting baseline math matrix conversions
+        # Internal conversion mapping back to Fahrenheit structures for underlying logic calculations
         m_temp_f = (m_temp_c * 9 / 5) + 32
         m_wind_mph = m_wind_kph / 1.60934
         weather = {"temp_c": m_temp_c, "temp_f": m_temp_f, "humidity": m_hum, "uv_index": m_uv,
@@ -305,12 +305,12 @@ with col_phys:
     st.markdown("---")
     st.markdown("**Optional Objective Vitals:**")
     pre_temp_check = st.checkbox("I have a manual pre-ride rectal temperature reading")
-    pre_temp_c = 38.0  # Healthy default rest core
+    pre_temp_c = 38.0
     if pre_temp_check:
         pre_temp_c = st.number_input("Enter Pre-Ride Rectal Temperature (°C)", min_value=36.0, max_value=41.5,
                                      value=38.0, step=0.1)
 
-# Package variables
+# Package unified system variables
 horse_data = {
     "age": age, "type": horse_type, "color": color, "coat": coat_status, "bcs": bcs, "turnout": turnout,
     "workload": workload, "fitness": fitness, "acclimatized": acclimatized, "hydration": hydration,
@@ -394,6 +394,9 @@ if location:
                 "<strong>• RECOVERY ACTIONS:</strong> Stable the animal in deep, unexposed shelter utilizing industrial airflow arrays or active cooling configurations. Maintain hydration support profiles and monitor core parameters closely."
                 "</div>", unsafe_allow_html=True
             )
+else:
+    st.info(
+        "💡 Complete Section 1 by entering a geographic query to launch the automated bio-thermal risk evaluation sequence.")
 
 # ==========================================
 # 4. VETERINARY RESEARCH & LITERATURE PANEL
@@ -424,7 +427,3 @@ with st.expander("🔍 VETERINARY RESEARCH & REFERENCE INDEX", expanded=False):
         • <a href="https://www.beva.org.uk/" target="_blank" style="color: {brand_primary}; font-weight: 600;">British Equine Veterinary Association (BEVA) Resources</a>
     </div>
     """, unsafe_allow_html=True)
-
-else:
-st.info(
-    "💡 Complete Section 1 by entering a geographic query to launch the automated bio-thermal risk evaluation sequence.")
