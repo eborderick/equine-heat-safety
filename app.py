@@ -270,8 +270,8 @@ with col_env:
     st.markdown("<div class='stSubheader'>Weather Parameters & Settings</div>", unsafe_allow_html=True)
     
     # Modern Custom Slider Switch Component
-    from streamlit_toggle import st_toggle
-    use_fahrenheit = st_toggle("Display in Fahrenheit (°F / mph)", value=False)
+    from streamlit_toggle_switch import st_toggle_switch
+    use_fahrenheit = st_toggle_switch("Display in Fahrenheit (°F / mph)", default_value=False)
     use_celsius = not use_fahrenheit
     
     st.write("")
