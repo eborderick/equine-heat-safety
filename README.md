@@ -1,8 +1,8 @@
-# Equine Bio-Thermal Analytics Platform
+# Equi-Weather Safety Metrics
 
-A high-fidelity, professional software solution designed to cross-evaluate real-time atmospheric data against complex equine physiological markers to calculate exact thermoregulatory risk thresholds.
+A live, real-time weather analytics utility for equine thermodynamics, hosted under the Equine Analytics Hub portfolio.
 
-This can be directly accessed by the following link: https://equine-heat-safety.streamlit.app/
+This can be directly accessed by the following link: https://equi-weather-safety-metrics.streamlit.app/
 
 ## Core Features
 - **Live Meteorological Sync:** Direct tracking of ambient temperature, relative humidity, wind velocity, and cloud cover indexes via OpenWeatherMap.
