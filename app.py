@@ -240,23 +240,23 @@ st.markdown(f"""
     .protocol-box {{ line-height: 1.6; font-size: 0.95rem; border-radius: 6px; box-shadow: 0 1px 2px rgba(0,0,0,0.02); }}
     .mono-metric {{ font-family: 'SFMono-Regular', Consolas, monospace; font-weight: 700; background-color: #f1f5f9; padding: 3px 7px; border-radius: 4px; color: {brand_primary}; }}
 
-    /* NATIVE SLIDING TOGGLE STYLING OVERRIDES */
-    div[data-testid="stCheckbox"] label p {
+    /* NATIVE SWITCH-TOGGLE STYLE OVERRIDES WITH ESCAPED DOUBLE BRACES */
+    div[data-testid="stCheckbox"] label p {{
         font-weight: 600 !important;
         color: {brand_primary} !important;
-    }
-    div[data-testid="stCheckbox"] [data-testid="stWidgetLabel"] {
+    }}
+    div[data-testid="stCheckbox"] [data-testid="stWidgetLabel"] {{
         background-color: #f1e5da;
         padding: 8px 14px;
         border-radius: 20px;
         border: 1px solid {brand_highlight};
         display: inline-flex;
         align-items: center;
-    }
+    }}
 </style>
 """, unsafe_allow_html=True)
 
-st.markdown("### EQUINE HEAT SAFETY ANALYTICS PLATFORM")
+st.markdown("### EQUINE HEAT SAFETY ANALITAS PLATFORM")
 st.caption("Powered by live, real-time local weather tracking data. Unlike standard forecast apps, this calculates your horse's current thermal load based on actual atmospheric conditions right now.")
 
 with st.expander("LEGAL COMPLIANCE & LIABILITY CLEARANCE STATEMENTS", expanded=False):
@@ -371,7 +371,7 @@ with col_phys:
 horse_data = {
     "age": age, "type": horse_type, "color": color, "coat": coat_status, "bcs": bcs, "turnout": turnout,
     "workload": workload, "fitness": fitness, "acclimatised": acclimatised, "hydration": hydration,
-    "sweat_type": sweat_type, "anhidrosis": anhidrosis, "cushings": cushings, "asthma": asthma,
+    "sweat_type": sweat_type, "anhidrosis": anthidrosis, "cushings": cushings, "asthma": asthma,
     "pre_temp_check": pre_temp_check, "pre_temp_f": pre_temp_f, "display_temp": display_temp, "shade": shade
 }
 
