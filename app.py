@@ -66,18 +66,13 @@ def calculate_comprehensive_safety(weather, horse):
     # ------------------------------------------
     # UK HUMIDITY GUARDRAIL ADJUSTMENT
     # ------------------------------------------
-    # Traditional Heat Index (Temp F + Humidity) over-penalises humidity in cold/damp climates.
-    # If ambient temp is low, convective air cooling overrides evaporative sweat restrictions.
     if temp_c < 16.0:
-        # Below 16°C: Humidity has negligible thermal risk on a walking/resting horse. Scale down massively.
         adjusted_humidity = raw_humidity * 0.15
         guardrail_applied = True
     elif temp_c < 20.0:
-        # Between 16°C and 20°C: Scale humidity impact linearly (50% reduction) to smooth the transition.
         adjusted_humidity = raw_humidity * 0.50
         guardrail_applied = True
     else:
-        # 20°C (68°F) and above: Standard veterinary formula parameters apply.
         adjusted_humidity = raw_humidity
         guardrail_applied = False
 
@@ -213,7 +208,7 @@ def calculate_comprehensive_safety(weather, horse):
 
 
 # ==========================================
-# 2. BRANDED GRAPHICS & UK L10N CSS CODES
+# 2. BRANDED GRAPHICS & NATIVE CSS INJECTION
 # ==========================================
 
 st.set_page_config(page_title="Equine Heat Safety Analytics Platform", page_icon="🐴", layout="wide")
@@ -244,6 +239,20 @@ st.markdown(f"""
 
     .protocol-box {{ line-height: 1.6; font-size: 0.95rem; border-radius: 6px; box-shadow: 0 1px 2px rgba(0,0,0,0.02); }}
     .mono-metric {{ font-family: 'SFMono-Regular', Consolas, monospace; font-weight: 700; background-color: #f1f5f9; padding: 3px 7px; border-radius: 4px; color: {brand_primary}; }}
+
+    /* NATIVE SLIDING TOGGLE STYLING OVERRIDES */
+    div[data-testid="stCheckbox"] label p {
+        font-weight: 600 !important;
+        color: {brand_primary} !important;
+    }
+    div[data-testid="stCheckbox"] [data-testid="stWidgetLabel"] {
+        background-color: #f1e5da;
+        padding: 8px 14px;
+        border-radius: 20px;
+        border: 1px solid {brand_highlight};
+        display: inline-flex;
+        align-items: center;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -269,9 +278,8 @@ col_env, col_phys = st.columns([1, 1.2])
 with col_env:
     st.markdown("<div class='stSubheader'>Weather Parameters & Settings</div>", unsafe_allow_html=True)
     
-    # Modern Custom Slider Switch Component
-    from streamlit_toggle_switch import st_toggle_switch
-    use_fahrenheit = st_toggle_switch("Display in Fahrenheit (°F / mph)", default_value=False)
+    # 100% Native, Crash-proof styled switch toggle checkbox
+    use_fahrenheit = st.checkbox("⚙️ Enable Imperial System (Fahrenheit / mph)", value=False)
     use_celsius = not use_fahrenheit
     
     st.write("")
@@ -434,7 +442,7 @@ if location:
                 "<strong>• HYDROTHERMAL DISPERSION:</strong> Apply continuous, high-volume cold water to key surface vascular nets (neck frame, pectoral chest wall, inner quarters). <em>Do not waste time with a sweat scraper</em>; moving liquid loops conduct internal heat outward dramatically faster than stagnant air."
                 "</div>", unsafe_allow_html=True
             )
-        elif resulta["color"] == "orange":
+        elif results["color"] == "orange":
             st.markdown(
                 f"<div class='protocol-box' style='color:{brand_text}; background-color:#f7ede6; padding:15px; border-radius:4px; border: 1px solid {brand_primary};'>"
                 "<strong>• AGGRESSIVE WORK RESTRAINTS ENFORCED:</strong> Session goals must be downscaled strictly to low-impact walk frames and highly conservative light trot patterns. Completely eliminate canter patterns and jump training pipelines.<br>"
