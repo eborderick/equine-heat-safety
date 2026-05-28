@@ -66,13 +66,18 @@ def calculate_comprehensive_safety(weather, horse):
     # ------------------------------------------
     # UK HUMIDITY GUARDRAIL ADJUSTMENT
     # ------------------------------------------
+    # Traditional Heat Index (Temp F + Humidity) over-penalises humidity in cold/damp climates.
+    # If ambient temp is low, convective air cooling overrides evaporative sweat restrictions.
     if temp_c < 16.0:
+        # Below 16°C: Humidity has negligible thermal risk on a walking/resting horse. Scale down massively.
         adjusted_humidity = raw_humidity * 0.15
         guardrail_applied = True
     elif temp_c < 20.0:
+        # Between 16°C and 20°C: Scale humidity impact linearly (50% reduction) to smooth the transition.
         adjusted_humidity = raw_humidity * 0.50
         guardrail_applied = True
     else:
+        # 20°C (68°F) and above: Standard veterinary formula parameters apply.
         adjusted_humidity = raw_humidity
         guardrail_applied = False
 
@@ -261,13 +266,13 @@ st.markdown("---")
 
 col_env, col_phys = st.columns([1, 1.2])
 
-# UNIT CONFIGURATION (GLOBAL SETTING VIA SIDEBAR OR TOP-OF-COLUMN)
 with col_env:
     st.markdown("<div class='stSubheader'>Weather Parameters & Settings</div>", unsafe_allow_html=True)
     
-    # Unit Selector Toggle
-    unit_system = st.radio("Preferred Metric System", ["Celsius (°C / km/h)", "Fahrenheit (°F / mph)"], horizontal=True)
-    use_celsius = unit_system == "Celsius (°C / km/h)"
+    # Modern Custom Slider Switch Component
+    from streamlit_toggle import st_toggle
+    use_fahrenheit = st_toggle("Display in Fahrenheit (°F / mph)", value=False)
+    use_celsius = not use_fahrenheit
     
     st.write("")
     manual_mode = st.checkbox("Manual Override (Skip Weather API Sync)")
@@ -342,7 +347,6 @@ with col_phys:
     st.markdown("**Optional Temperature Reading:**")
     pre_temp_check = st.checkbox("I have a manual pre-ride rectal temperature reading")
     
-    # Handle Rectal Vitals based on selected display system
     pre_temp_f = 100.4
     display_temp = "38.0°C"
     if pre_temp_check:
@@ -381,8 +385,6 @@ if location:
         st.markdown("<div class='stSubheader'>System Assessment Verdict</div>", unsafe_allow_html=True)
 
         card_class = f"card-{results['color']}"
-        
-        # Format the display summary line dynamically based on unit system option
         display_weather_temp = f"{weather['temp_c']}°C" if use_celsius else f"{weather['temp_f']}°F"
         
         st.markdown(f"""
@@ -432,7 +434,7 @@ if location:
                 "<strong>• HYDROTHERMAL DISPERSION:</strong> Apply continuous, high-volume cold water to key surface vascular nets (neck frame, pectoral chest wall, inner quarters). <em>Do not waste time with a sweat scraper</em>; moving liquid loops conduct internal heat outward dramatically faster than stagnant air."
                 "</div>", unsafe_allow_html=True
             )
-        elif results["color"] == "orange":
+        elif resulta["color"] == "orange":
             st.markdown(
                 f"<div class='protocol-box' style='color:{brand_text}; background-color:#f7ede6; padding:15px; border-radius:4px; border: 1px solid {brand_primary};'>"
                 "<strong>• AGGRESSIVE WORK RESTRAINTS ENFORCED:</strong> Session goals must be downscaled strictly to low-impact walk frames and highly conservative light trot patterns. Completely eliminate canter patterns and jump training pipelines.<br>"
