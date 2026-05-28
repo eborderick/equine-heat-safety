@@ -211,7 +211,7 @@ def calculate_comprehensive_safety(weather, horse):
 # 2. BRANDED GRAPHICS & NATIVE CSS INJECTION
 # ==========================================
 
-st.set_page_config(page_title="Equine Heat Safety Analytics Platform", page_icon="🐴", layout="wide")
+st.set_page_config(page_title="Equi-Weather Safety Metrics", page_icon="🐴", layout="wide")
 
 brand_primary = "#A6512D"  # Burnt Copper
 brand_bg = "#EAD9C8"  # Soft Oat Cream
@@ -256,7 +256,7 @@ st.markdown(f"""
 </style>
 """, unsafe_allow_html=True)
 
-st.markdown("### EQUINE HEAT SAFETY ANALITAS PLATFORM")
+st.markdown("### EQUI-WEATHER SAFETY METRICS")
 st.caption("Powered by live, real-time local weather tracking data. Unlike standard forecast apps, this calculates your horse's current thermal load based on actual atmospheric conditions right now.")
 
 with st.expander("LEGAL COMPLIANCE & LIABILITY CLEARANCE STATEMENTS", expanded=False):
@@ -279,7 +279,7 @@ with col_env:
     st.markdown("<div class='stSubheader'>Weather Parameters & Settings</div>", unsafe_allow_html=True)
     
     # 100% Native, Crash-proof styled switch toggle checkbox
-    use_fahrenheit = st.checkbox("⚙️ Enable Imperial System (Fahrenheit / mph)", value=False)
+    use_fahrenheit = st.checkbox("Enable Imperial System (Fahrenheit / mph)", value=False)
     use_celsius = not use_fahrenheit
     
     st.write("")
