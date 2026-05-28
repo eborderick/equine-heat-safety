@@ -495,7 +495,7 @@ with st.expander("RESEARCH & REFERENCES", expanded=False):
 # PRODUCTION COPYRIGHT FOOTER WITH LINKTREE
 st.markdown("""
 <div style='text-align: center; margin-top: 40px; font-size: 0.8rem; opacity: 0.8;'>
-    © 2026 Eloise Borderick / Equine Heat Safety Analytics Platform. All Rights Reserved.<br>
+    © 2026 Eloise Borderick / Equine Analytics Hub. All Rights Reserved.<br>
     <a href='https://linktr.ee/ehborders' target='_blank' style='color: #A6512D; font-weight: bold; text-decoration: none;'>
         📱 Connect on Social Media & Follow Sox 🐴
     </a>
