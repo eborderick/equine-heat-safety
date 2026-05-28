@@ -60,10 +60,34 @@ def calculate_comprehensive_safety(weather, horse):
     Calculates exact thermodynamic burden using physiological modifiers.
     All incoming parameters are processed relative to standard equine thermal thresholds.
     """
+    temp_c = weather["temp_c"]
+    raw_humidity = weather["humidity"]
+
+    # ------------------------------------------
+    # UK HUMIDITY GUARDRAIL ADJUSTMENT
+    # ------------------------------------------
+    # Traditional Heat Index (Temp F + Humidity) over-penalises humidity in cold/damp climates.
+    # If ambient temp is low, convective air cooling overrides evaporative sweat restrictions.
+    if temp_c < 16.0:
+        # Below 16°C: Humidity has negligible thermal risk on a walking/resting horse. Scale down massively.
+        adjusted_humidity = raw_humidity * 0.15
+        guardrail_applied = True
+    elif temp_c < 20.0:
+        # Between 16°C and 20°C: Scale humidity impact linearly (50% reduction) to smooth the transition.
+        adjusted_humidity = raw_humidity * 0.50
+        guardrail_applied = True
+    else:
+        # 20°C (68°F) and above: Standard veterinary formula parameters apply.
+        adjusted_humidity = raw_humidity
+        guardrail_applied = False
+
     # Dynamic calculation equation relies on calibrated baseline conversions
-    base_index = weather["temp_f"] + weather["humidity"]
+    base_index = weather["temp_f"] + adjusted_humidity
     penalty_score = 0
     risk_factors = []
+
+    if guardrail_applied and raw_humidity >= 70:
+        risk_factors.append(f"• UK Climate Guardrail: High humidity ({raw_humidity}%) adjusted due to cool ambient air ({temp_c}°C), enabling standard convective cooling.")
 
     # ------------------------------------------
     # CRITICAL TRIGGER CHECKPOINTS (ABSOLUTE FAILS)
@@ -173,7 +197,7 @@ def calculate_comprehensive_safety(weather, horse):
         penalty_score += 10
         risk_factors.append("• Moderate Workload: Elevates internal body temperatures steadily over time.")
 
-    total_score = base_index + penalty_score
+    total_score = round(base_index + penalty_score)
 
     if total_score < 130:
         return {"status": "🌿 SAFE TO RIDE: OPTIMAL BASELINE", "score": total_score, "color": "green",
@@ -235,7 +259,7 @@ with st.expander("LEGAL COMPLIANCE & LIABILITY CLEARANCE STATEMENTS", expanded=F
         "Individual equine physiological responses vary aggressively based on genetics, hydration, and unmapped systemic conditions. "
         "Users must cross-reference analytical calculations against real-time common-sense observation. "
         "The developer and hosting entities accept zero liability for animal illness or physical performance injuries. "
-        "ALWAYS THE ADVICE OF YOUR OWN VETS."
+        "ALWAYS FOLLOW THE ADVICE OF YOUR OWN VETS."
         "</div>", unsafe_allow_html=True
     )
 
