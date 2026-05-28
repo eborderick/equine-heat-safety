@@ -371,7 +371,7 @@ with col_phys:
 horse_data = {
     "age": age, "type": horse_type, "color": color, "coat": coat_status, "bcs": bcs, "turnout": turnout,
     "workload": workload, "fitness": fitness, "acclimatised": acclimatised, "hydration": hydration,
-    "sweat_type": sweat_type, "anhidrosis": anthidrosis, "cushings": cushings, "asthma": asthma,
+    "sweat_type": sweat_type, "anhidrosis": anhidrosis, "cushings": cushings, "asthma": asthma,
     "pre_temp_check": pre_temp_check, "pre_temp_f": pre_temp_f, "display_temp": display_temp, "shade": shade
 }
 
