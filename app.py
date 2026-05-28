@@ -10,7 +10,7 @@ def get_live_weather(location, api_key=None):
     """
     Fetches real-time data using secure configuration keys.
     Pulls securely from Streamlit Cloud Secrets if no key is explicitly passed.
-    Returns metrics normalised to Celsius.
+    Returns metrics normalised to Celsius and Fahrenheit.
     """
     if not location:
         return None
@@ -37,13 +37,13 @@ def get_live_weather(location, api_key=None):
         clouds = data.get("clouds", {}).get("all", 0)
         estimated_uv = max(1.0, 10.0 - (clouds / 10.0))
 
-        # Capture raw Fahrenheit data for logic processing, and convert to Celsius for display
+        # Capture raw Fahrenheit data and compute Celsius conversion
         temp_f = float(data["main"]["temp"])
         temp_c = (temp_f - 32) * 5 / 9
 
         return {
             "temp_c": round(temp_c, 1),
-            "temp_f": temp_f,
+            "temp_f": round(temp_f, 1),
             "humidity": int(data["main"]["humidity"]),
             "uv_index": float(estimated_uv),
             "wind_speed_mph": float(data["wind"]["speed"]),
@@ -66,18 +66,13 @@ def calculate_comprehensive_safety(weather, horse):
     # ------------------------------------------
     # UK HUMIDITY GUARDRAIL ADJUSTMENT
     # ------------------------------------------
-    # Traditional Heat Index (Temp F + Humidity) over-penalises humidity in cold/damp climates.
-    # If ambient temp is low, convective air cooling overrides evaporative sweat restrictions.
     if temp_c < 16.0:
-        # Below 16°C: Humidity has negligible thermal risk on a walking/resting horse. Scale down massively.
         adjusted_humidity = raw_humidity * 0.15
         guardrail_applied = True
     elif temp_c < 20.0:
-        # Between 16°C and 20°C: Scale humidity impact linearly (50% reduction) to smooth the transition.
         adjusted_humidity = raw_humidity * 0.50
         guardrail_applied = True
     else:
-        # 20°C (68°F) and above: Standard veterinary formula parameters apply.
         adjusted_humidity = raw_humidity
         guardrail_applied = False
 
@@ -87,7 +82,7 @@ def calculate_comprehensive_safety(weather, horse):
     risk_factors = []
 
     if guardrail_applied and raw_humidity >= 70:
-        risk_factors.append(f"• UK Climate Guardrail: High humidity ({raw_humidity}%) adjusted due to cool ambient air ({temp_c}°C), enabling standard convective cooling.")
+        risk_factors.append(f"• UK Climate Guardrail: High humidity ({raw_humidity}%) adjusted due to cool ambient air ({temp_c}°C / {weather['temp_f']}°F), enabling standard convective cooling.")
 
     # ------------------------------------------
     # CRITICAL TRIGGER CHECKPOINTS (ABSOLUTE FAILS)
@@ -102,10 +97,10 @@ def calculate_comprehensive_safety(weather, horse):
                 "factors": [
                     "⚠️ DEHYDRATION: Pre-existing fluid deficit eliminates the horse's ability to cool itself safely."]}
 
-    if horse["pre_temp_check"] and horse["pre_temp_c"] >= 38.9:
+    if horse["pre_temp_check"] and horse["pre_temp_f"] >= 102.0:
         return {"status": "CRITICAL RISK: DO NOT RIDE", "score": 999, "color": "red",
                 "factors": [
-                    f"⚠️ ELEVATED INITIAL VITALS: Baseline temperature is currently {horse['pre_temp_c']}°C. The horse is already hyperthermic or fighting infection."]}
+                    f"⚠️ ELEVATED INITIAL VITALS: Baseline temperature is currently {horse['display_temp']}. The horse is already hyperthermic or fighting infection."]}
 
     # ------------------------------------------
     # PHYSIOLOGICAL & CLINICAL MODIFIERS
@@ -153,10 +148,9 @@ def calculate_comprehensive_safety(weather, horse):
         risk_factors.append(
             "• Lathering Sweat: Heavy white foam indicates rapid, high-concentration electrolyte depletion.")
 
-    if horse["pre_temp_check"] and 38.3 <= horse["pre_temp_c"] < 38.9:
-        penalty_score += 10
+    if horse["pre_temp_check"] and 101.0 <= horse["pre_temp_f"] < 102.0:
         risk_factors.append(
-            f"• Borderline Elevated Baseline Vitals ({horse['pre_temp_c']}°C): Commencing work with reduced safety margin.")
+            f"• Borderline Elevated Baseline Vitals ({horse['display_temp']}): Commencing work with reduced safety margin.")
 
     if horse["turnout"] == "Stabled indoors (Warm, poor airflow building)":
         penalty_score += 7
@@ -267,9 +261,15 @@ st.markdown("---")
 
 col_env, col_phys = st.columns([1, 1.2])
 
+# UNIT CONFIGURATION (GLOBAL SETTING VIA SIDEBAR OR TOP-OF-COLUMN)
 with col_env:
-    st.markdown("<div class='stSubheader'>Weather Parameters (Metric)</div>", unsafe_allow_html=True)
-
+    st.markdown("<div class='stSubheader'>Weather Parameters & Settings</div>", unsafe_allow_html=True)
+    
+    # Unit Selector Toggle
+    unit_system = st.radio("Preferred Metric System", ["Celsius (°C / km/h)", "Fahrenheit (°F / mph)"], horizontal=True)
+    use_celsius = unit_system == "Celsius (°C / km/h)"
+    
+    st.write("")
     manual_mode = st.checkbox("Manual Override (Skip Weather API Sync)")
 
     if not manual_mode:
@@ -279,17 +279,28 @@ with col_env:
         weather = get_live_weather(location)
     else:
         location = "Manual Override Mode"
-        m_temp_c = st.slider("Observed Temperature (°C)", 15.0, 45.0, 28.0, step=0.5)
+        
+        if use_celsius:
+            m_temp_c = st.slider("Observed Temperature (°C)", 15.0, 45.0, 28.0, step=0.5)
+            m_temp_f = (m_temp_c * 9 / 5) + 32
+        else:
+            m_temp_f = st.slider("Observed Temperature (°F)", 59.0, 113.0, 82.4, step=1.0)
+            m_temp_c = (m_temp_f - 32) * 5 / 9
+
         m_hum = st.slider("Observed Relative Humidity (%)", 10, 100, 60)
-        m_wind_kph = st.slider("Observed Wind Speed (km/h)", 0.0, 40.0, 10.0, step=0.5)
+        
+        if use_celsius:
+            m_wind_kph = st.slider("Observed Wind Speed (km/h)", 0.0, 40.0, 10.0, step=0.5)
+            m_wind_mph = m_wind_kph / 1.60934
+        else:
+            m_wind_mph = st.slider("Observed Wind Speed (mph)", 0.0, 25.0, 6.2, step=0.5)
+            m_wind_kph = m_wind_mph * 1.60934
+            
         m_uv = st.slider("Estimated Solar Exposure / UV (1-10 Scale)", 1, 10, 5)
         shade = st.radio("Solar Radiation Cover",
                          ["Completely Shaded / Indoor Arena", "Partial Shade / Canopy", "Full Sun / No Arena Cover"])
 
-        # Internal conversion mapping back to Fahrenheit structures for underlying logic calculations
-        m_temp_f = (m_temp_c * 9 / 5) + 32
-        m_wind_mph = m_wind_kph / 1.60934
-        weather = {"temp_c": m_temp_c, "temp_f": m_temp_f, "humidity": m_hum, "uv_index": m_uv,
+        weather = {"temp_c": round(m_temp_c, 1), "temp_f": round(m_temp_f, 1), "humidity": m_hum, "uv_index": m_uv,
                    "wind_speed_mph": m_wind_mph, "wind_speed_kph": m_wind_kph, "error": None}
 
 with col_phys:
@@ -330,17 +341,26 @@ with col_phys:
     st.markdown("---")
     st.markdown("**Optional Temperature Reading:**")
     pre_temp_check = st.checkbox("I have a manual pre-ride rectal temperature reading")
-    pre_temp_c = 38.0
+    
+    # Handle Rectal Vitals based on selected display system
+    pre_temp_f = 100.4
+    display_temp = "38.0°C"
     if pre_temp_check:
-        pre_temp_c = st.number_input("Enter Pre-Ride Rectal Temperature (°C)", min_value=36.0, max_value=41.5,
-                                     value=38.0, step=0.1)
+        if use_celsius:
+            pre_temp_c = st.number_input("Enter Pre-Ride Rectal Temperature (°C)", min_value=36.0, max_value=41.5, value=38.0, step=0.1)
+            pre_temp_f = (pre_temp_c * 9/5) + 32
+            display_temp = f"{pre_temp_c:.1f}°C"
+        else:
+            pre_temp_f = st.number_input("Enter Pre-Ride Rectal Temperature (°F)", min_value=96.8, max_value=106.7, value=100.4, step=0.1)
+            pre_temp_c = (pre_temp_f - 32) * 5/9
+            display_temp = f"{pre_temp_f:.1f}°F"
 
 # Package unified system variables
 horse_data = {
     "age": age, "type": horse_type, "color": color, "coat": coat_status, "bcs": bcs, "turnout": turnout,
     "workload": workload, "fitness": fitness, "acclimatised": acclimatised, "hydration": hydration,
     "sweat_type": sweat_type, "anhidrosis": anhidrosis, "cushings": cushings, "asthma": asthma,
-    "pre_temp_check": pre_temp_check, "pre_temp_c": pre_temp_c, "shade": shade
+    "pre_temp_check": pre_temp_check, "pre_temp_f": pre_temp_f, "display_temp": display_temp, "shade": shade
 }
 
 # ==========================================
@@ -361,20 +381,29 @@ if location:
         st.markdown("<div class='stSubheader'>System Assessment Verdict</div>", unsafe_allow_html=True)
 
         card_class = f"card-{results['color']}"
+        
+        # Format the display summary line dynamically based on unit system option
+        display_weather_temp = f"{weather['temp_c']}°C" if use_celsius else f"{weather['temp_f']}°F"
+        
         st.markdown(f"""
         <div class='{card_class}'>
             <div class='card-title'>{results['status']}</div>
             <div style='font-size: 0.95rem; line-height:1.5; color: {brand_text};'>
-                Atmospheric readings register at <span class='mono-metric'>{weather['temp_c']}°C</span> with <span class='mono-metric'>{weather['humidity']}%</span> humidity. 
+                Atmospheric readings register at <span class='mono-metric'>{display_weather_temp}</span> with <span class='mono-metric'>{weather['humidity']}%</span> humidity. 
                 Applying comprehensive bio-physical burden multipliers outputs an adjusted platform safety score of <span class='mono-metric'>{results['score']}</span>.
             </div>
         </div>
         """, unsafe_allow_html=True)
 
         m1, m2, m3, m4 = st.columns(4)
-        m1.metric("Ambient Temperature", f"{weather['temp_c']}°C")
+        if use_celsius:
+            m1.metric("Ambient Temperature", f"{weather['temp_c']}°C")
+            m3.metric("Wind Current Speed", f"{weather['wind_speed_kph']} km/h")
+        else:
+            m1.metric("Ambient Temperature", f"{weather['temp_f']}°F")
+            m3.metric("Wind Current Speed", f"{weather['wind_speed_mph']} mph")
+            
         m2.metric("Relative Humidity", f"{weather['humidity']}%")
-        m3.metric("Wind Current Speed", f"{weather['wind_speed_kph']} km/h")
         m4.metric("Solar Cloud Index", f"{weather['uv_index']:.1f}/10")
 
         if results["factors"]:
